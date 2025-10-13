@@ -79,11 +79,11 @@ Logs appear on `stderr`.
 
 * **gcid**: BMW Group Customer ID used as MQTT username. Optional in refresh responses but preserved when present.
 * **token_type**: Usually `"Bearer"`.
-* **access_token**: Short-lived OAuth access token. Not used by MQTT but present.
-* **refresh_token**: Long-lived token used to obtain new `id_token`. **Required** by this program.
+* **access_token**: Short-lived OAuth access token.
+* **refresh_token**: Long-lived token used to obtain new `id_token`.
 * **scope**: Granted scopes string.
 * **expires_in**: Seconds until expiry as returned by the last token endpoint call.
-* **id_token**: JWT used as MQTT password.
+* **id_token**: JWT (also used as MQTT password).
 * **fetched_at**: Unix epoch when the last refresh was fetched. Added by this program.
 * **expires_at**: Absolute Unix epoch expiry time. Added by this program.
 * **client_id**: OAuth client ID used for refresh. **Required** in `token.json`.
@@ -132,3 +132,6 @@ Copyright (C) 2025 Simon Brennecke, licensed under GNU GPL version 3 or later.
 Special thanks go to dj0abr (Kurt Moraw) and his [bmw-mqtt-bridge](https://github.com/dj0abr/bmw-mqtt-bridge).
 Most of the code from `fetch-init-token*.sh` is based on his work.
 Thank you!
+
+Also a big thank you to the folks at [bimmer_connected](https://github.com/bimmerconnected/bimmer_connected).
+I used *bimmer_connected* for almost two years, before BMW decided to change the API to MQTT.
