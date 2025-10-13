@@ -13,6 +13,17 @@ It reads `token.json`, performs an immediate refresh, writes the updated file at
 
 - Initial token generation via `fetch-init-token-nodeps.sh`
 
+## General workflow
+
+- Create a BMW account, register your car, etc. Note your cars VIN.
+- Create a CarData Client on the BMW website. Note the ClientID.
+- Create a CarData steam, by clicking *CarData Streaming* => *Create Stream*.
+- In *Data Selection* subscribe the stream to all the topics you are interested in.
+- insert the client id and your cars vehicle identifier (VIN) in `fetch-init-token-nodeps.sh`
+- run `fetch-init-token-nodeps.sh`, your browser will open and authorize the token
+- after a few seconds you should have an initial token in `token.json`.
+- you can now copy that token whereever you need it and run `bmw-token-manager.php` to keep it fresh.
+
 ## Requirements
 
 - PHP 8.1+ with `curl` and `json` extensions.
