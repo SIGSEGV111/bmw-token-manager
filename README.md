@@ -115,3 +115,9 @@ Written by Simon Brennecke.
 # COPYRIGHT
 
 Copyright (C) 2025 Simon Brennecke, licensed under GNU GPL version 3 or later.
+
+# CREDITS
+
+Special thanks go to dj0abr (Kurt Moraw) and his [bmw-mqtt-bridge](https://github.com/dj0abr/bmw-mqtt-bridge).
+Most of the code from `fetch-init-token*.sh` is based on his work.
+Thank you!
