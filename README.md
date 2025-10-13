@@ -1,4 +1,4 @@
-# BmwTokenManager
+# bmw-token-manager.php
 
 Small PHP 8+ daemon that keeps a BMW OAuth token fresh.
 It reads `token.json`, performs an immediate refresh, writes the updated file atomically, and then keeps the token alive by refreshing before expiry.
@@ -20,14 +20,14 @@ It reads `token.json`, performs an immediate refresh, writes the updated file at
 ## Installation
 
 ```bash
-cp BmwTokenManager.php /usr/local/bin/BmwTokenManager
-chmod +x /usr/local/bin/BmwTokenManager
+cp bmw-token-manager.php /usr/local/bin/bmw-token-manager.php
+chmod +x /usr/local/bin/bmw-token-manager.php
 ````
 
 ## Usage
 
 ```bash
-BmwTokenManager \
+bmw-token-manager.php \
 	--token-file=/path/to/token.json \
 	--refresh-margin=120
 ```
@@ -92,7 +92,7 @@ After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/BmwTokenManager --token-file=/etc/bmw/token.json --refresh-margin=120
+ExecStart=/usr/local/bin/bmw-token-manager.php --token-file=/etc/bmw/token.json --refresh-margin=120
 Restart=always
 RestartSec=5s
 User=bmw
@@ -107,3 +107,11 @@ WantedBy=multi-user.target
 
 * Ensure `token.json` is owned by a dedicated user and not world-readable.
 * The program enforces `0600` on writes but does not change existing ownership.
+
+# AUTHOR
+
+Written by Simon Brennecke.
+
+# COPYRIGHT
+
+Copyright (C) 2025 Simon Brennecke, licensed under GNU GPL version 3 or later.
