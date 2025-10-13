@@ -24,6 +24,8 @@ It reads `token.json`, performs an immediate refresh, writes the updated file at
 - after a few seconds you should have an initial token in `token.json`.
 - you can now copy that token whereever you need it and run `bmw-token-manager.php` to keep it fresh.
 
+Also have a look at [bmw-portal-setup](https://github.com/JjyKsi/bmw-cardata-ha?tab=readme-ov-file#bmw-portal-setup-dont-skip-do-this-first) from *bmw-cardata-ha*.
+
 ## Requirements
 
 - PHP 8.1+ with `curl` and `json` extensions.
@@ -135,3 +137,5 @@ Thank you!
 
 Also a big thank you to the folks at [bimmer_connected](https://github.com/bimmerconnected/bimmer_connected).
 I used *bimmer_connected* for almost two years, before BMW decided to change the API to MQTT.
+
+Thank you to JjyKsi from [bmw-cardata-ha](https://github.com/JjyKsi/bmw-cardata-ha) for the guide on how to create the CarData stream.
