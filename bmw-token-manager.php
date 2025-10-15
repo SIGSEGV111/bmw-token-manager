@@ -12,8 +12,7 @@ cli_set_process_title('bmw-token-manager.php');
  */
 
 const TOKEN_URL = 'https://customer.bmwgroup.com/gcdm/oauth/token';
-const DEFAULT_TOKEN_FILE = 'token.json';
-const MIN_REFRESH_MARGIN = 120; // seconds before expiry to refresh
+const MIN_REFRESH_MARGIN = 300; // seconds before expiry to refresh
 const RETRY_MAX = 5;
 const RETRY_BASE_DELAY = 3; // seconds
 const HTTP_TIMEOUT = 20;
@@ -21,10 +20,10 @@ const HTTP_TIMEOUT = 20;
 function parseArgs() : array
 {
 	$opts = getopt('t:m:', ['token-file:', 'refresh-margin:']);
-	$token_file = $opts['t'] ?? $opts['token-file'] ?? DEFAULT_TOKEN_FILE;
-	$refresh_margin = (int)($opts['m'] ?? $opts['refresh-margin'] ?? MIN_REFRESH_MARGIN);
+	$token_file = $opts['t'] ?? $opts['token-file'] ?? getenv("BMW_TOKEN_FILE") ?? "";
+	$refresh_margin = (int)($opts['m'] ?? $opts['refresh-margin'] ?? getenv("BMW_REFRESH_MARGIN") ?? MIN_REFRESH_MARGIN);
 
-	if ($token_file === '')
+	if($token_file === '')
 	{
 		throw new InvalidArgumentException('Missing argument: t:token-file');
 	}
@@ -37,17 +36,17 @@ function parseArgs() : array
 
 function readTokenFile(string $path) : array
 {
-	if (!is_file($path))
+	if(!is_file($path))
 	{
 		throw new RuntimeException("Token file not found: {$path}");
 	}
 	$json = file_get_contents($path);
-	if ($json === false)
+	if($json === false)
 	{
 		throw new RuntimeException("Failed to read token file: {$path}");
 	}
 	$data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
-	if (!isset($data['refresh_token']))
+	if(!isset($data['refresh_token']))
 	{
 		throw new RuntimeException('token.json missing "refresh_token"');
 	}
@@ -58,16 +57,16 @@ function writeTokenFile(string $path, array $data) : void
 {
 	$tmp = $path . '.tmp';
 	$json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-	if ($json === false)
+	if($json === false)
 	{
 		throw new RuntimeException('Failed to encode token JSON');
 	}
-	if (file_put_contents($tmp, $json, LOCK_EX) === false)
+	if(file_put_contents($tmp, $json, LOCK_EX) === false)
 	{
 		throw new RuntimeException("Failed to write temp token file: {$tmp}");
 	}
 	@chmod($tmp, 0600);
-	if (!@rename($tmp, $path))
+	if(!@rename($tmp, $path))
 	{
 		@unlink($tmp);
 		throw new RuntimeException("Failed to atomically replace token file: {$path}");
@@ -77,7 +76,7 @@ function writeTokenFile(string $path, array $data) : void
 function postForm(string $url, array $fields) : array
 {
 	$ch = curl_init($url);
-	if ($ch === false)
+	if($ch === false)
 	{
 		throw new RuntimeException('Failed to init curl');
 	}
@@ -95,7 +94,7 @@ function postForm(string $url, array $fields) : array
 	]);
 
 	$response = curl_exec($ch);
-	if ($response === false)
+	if($response === false)
 	{
 		$err = curl_error($ch);
 		curl_close($ch);
@@ -120,7 +119,7 @@ function refreshToken(array $old_token) : array
 		'client_id' => $old_token['client_id'],
 	]);
 
-	if ($status !== 200)
+	if($status !== 200)
 	{
 		$err = @json_decode($body, true);
 		$code = $err['error'] ?? 'http_error';
@@ -130,7 +129,7 @@ function refreshToken(array $old_token) : array
 
 	$data = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
-	if (!isset($data['id_token'], $data['refresh_token']))
+	if(!isset($data['id_token'], $data['refresh_token']))
 	{
 		throw new RuntimeException('Token refresh response missing id_token or refresh_token');
 	}
@@ -190,7 +189,7 @@ function loopKeepAlive(string $token_file, int $refresh_margin, array $token) : 
 			catch (Throwable $e)
 			{
 				$attempt++;
-				if ($attempt > RETRY_MAX)
+				if($attempt > RETRY_MAX)
 				{
 					throw new RuntimeException("Permanent failure refreshing token after " . RETRY_MAX . " attempts: " . $e->getMessage(), 0, $e);
 				}

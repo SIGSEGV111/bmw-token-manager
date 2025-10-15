@@ -1,0 +1,25 @@
+[Unit]
+Description=Small PHP 8+ daemon that keeps a BMW OAuth token fresh
+Documentation=https://github.com/SIGSEGV111/bmw-token-manager
+After=network-online.target krenewd@%i.service
+Requires=network-online.target krenewd@%i.service
+StartLimitIntervalSec=0
+StartLimitBurst=2147483647
+
+[Service]
+Type=simple
+User=%i
+ExecStart=/usr/bin/bmw-token-manager.php
+EnvironmentFile=-/etc/bmw-token-manager.conf
+EnvironmentFile=-%h/bmw-token-manager.conf
+Restart=always
+RestartSec=15
+WorkingDirectory=%h
+UMask=0077
+
+# Security
+PrivateTmp=false
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
