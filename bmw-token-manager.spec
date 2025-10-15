@@ -1,6 +1,6 @@
 Name:           bmw-token-manager
 Summary:        Small PHP 8+ daemon that keeps a BMW OAuth token fresh
-Group:          Applications/Databases
+Group:          System/Daemons
 Distribution:   openSUSE
 License:        GPLv3
 URL:            https://www.brennecke-it.net
