@@ -11,10 +11,9 @@ Type=simple
 User=%i
 ExecStart=/usr/bin/bmw-token-manager.php
 EnvironmentFile=-/etc/bmw-token-manager.conf
-EnvironmentFile=-%h/bmw-token-manager.conf
 Restart=always
 RestartSec=15
-WorkingDirectory=%h
+WorkingDirectory=~
 UMask=0077
 
 # Security

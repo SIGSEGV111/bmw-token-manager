@@ -6,7 +6,7 @@ License:        GPLv3
 URL:            https://www.brennecke-it.net
 BuildArch:      noarch
 BuildRequires:  go-md2man easy-rpm
-Requires:       php-cli
+Requires:       php-cli php8-curl
 
 %description
 Small PHP 8+ daemon that keeps a BMW OAuth token fresh.
